@@ -46,7 +46,7 @@
   },
   "packageManager": "npm@11.2.0",
   "dependencies": {
-    "dotenv":"17.4.2'
+    "dotenv":"17.4.2"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
