@@ -6,7 +6,8 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 
 # Cài đặt production dependencies (không devDependencies)
-RUN npm ci --only=production --ignore-scripts
+# Đã sửa: --omit=dev thay cho --only=production (npm 11 không hỗ trợ cờ cũ)
+RUN npm ci --omit=dev --ignore-scripts
 
 # Stage 2: Production image (tinh gọn)
 FROM docker.io/node:26-alpine AS production
