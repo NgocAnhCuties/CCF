@@ -6,6 +6,7 @@ import { DRY_RUN, LIST_ITEM_LIMIT, LIST_ITEM_SIZE, PROCESSING_FILENAME } from '.
 import {
   buildAllowSet,
   createSmartBlockSet,
+  normalizeLine,
   notifyWebhook,
   readFile,
 } from './lib/utils.js';
@@ -45,6 +46,7 @@ try {
 
   let processedDomainCount = 0;
   let skippedInvalidCount = 0;
+  let skippedRedundantOrAllowedCount = 0;
   let limitReached = false;
 
   console.log(`Processing ${blocklistFilename}`);
@@ -59,7 +61,8 @@ try {
     }
 
     processedDomainCount++;
-    blockSet.add(domain);
+    const added = blockSet.add(domain);
+    if (!added) skippedRedundantOrAllowedCount++;
 
     if (blockSet.size() === LIST_ITEM_LIMIT) {
       console.log('Maximum number of blocked domains reached - Stopping processing blocklist...');
@@ -74,6 +77,7 @@ try {
   console.log('\n\n');
   console.log(`Number of lines processed: ${processedDomainCount}`);
   console.log(`Number of invalid/comment lines skipped: ${skippedInvalidCount}`);
+  console.log(`Number of allowlisted/redundant domains skipped: ${skippedRedundantOrAllowedCount}`);
   console.log(`Number of unique domains after smart dedup+pruning: ${domains.length}`);
   console.log(`Number of lists to be created: ${numberOfLists}`);
   console.log('\n\n');
@@ -100,4 +104,3 @@ try {
   }
   process.exit(1);
 }
-
