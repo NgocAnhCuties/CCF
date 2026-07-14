@@ -2,7 +2,7 @@ name: Push Lists to Cloudflare
 
 on:
   schedule:
-    # '0 0 * * *' nghĩa là chạy vào 00:00 mỗi ngày
+    # '0 17 * * *' nghĩa là chạy vào 00:00 mỗi ngày
     - cron: '0 0 * * *'
   workflow_dispatch:
 
