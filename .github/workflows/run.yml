@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
 
@@ -25,8 +25,9 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # Thêm các biến này để script nhận diện được cấu hình từ GitHub Variables
-          USER_DEFINED_ALLOWLIST_URLS: ${{ vars.USER_DEFINED_ALLOWLIST_URLS }}
-          USER_DEFINED_BLOCKLIST_URLS: ${{ vars.USER_DEFINED_BLOCKLIST_URLS }}
+          # Tên biến phải khớp đúng với process.env.ALLOWLIST_URLS / BLOCKLIST_URLS
+          # trong lib/constants.js (trước đây đặt tên sai USER_DEFINED_*, khiến
+          # cấu hình tùy chỉnh không bao giờ được đọc, luôn dùng list mặc định)
+          ALLOWLIST_URLS: ${{ vars.ALLOWLIST_URLS }}
+          BLOCKLIST_URLS: ${{ vars.BLOCKLIST_URLS }}
         run: npm start
-        
